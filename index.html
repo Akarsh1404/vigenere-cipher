@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vigenère Cipher Tool</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>🔐 Vigenère Cipher Tool</h1>
+
+    <textarea id="textInput" rows="5" placeholder="Enter plain or cipher text..."></textarea>
+    <input type="text" id="keyInput" placeholder="Enter key">
+
+    <div class="button-group">
+      <button onclick="encrypt()">Encrypt</button>
+      <button onclick="decrypt()">Decrypt</button>
+    </div>
+
+    <hr>
+
+    <h3>📄 Upload a Text File</h3>
+    <input type="file" id="fileInput" accept=".txt">
+    <div class="button-group">
+      <button onclick="encryptFile()">Encrypt File</button>
+      <button onclick="decryptFile()">Decrypt File</button>
+    </div>
+
+    <div class="output" id="output"></div>
+  </div>
+
+  <script>
+    function vigenere(text, key, mode) {
+      text = text.toUpperCase().replace(/[^A-Z]/g, '');
+      key = key.toUpperCase();
+      let result = '';
+      let keyIndex = 0;
+
+      for (let i = 0; i < text.length; i++) {
+        let charCode = text.charCodeAt(i) - 65;
+        let keyChar = key.charCodeAt(keyIndex % key.length) - 65;
+        let newChar;
+
+        if (mode === 'encrypt') {
+          newChar = (charCode + keyChar) % 26;
+        } else {
+          newChar = (charCode - keyChar + 26) % 26;
+        }
+
+        result += String.fromCharCode(newChar + 65);
+        keyIndex++;
+      }
+
+      return result;
+    }
+
+    function encrypt() {
+      const text = document.getElementById('textInput').value;
+      const key = document.getElementById('keyInput').value;
+      if (!text || !key) return alert("Please enter both text and key!");
+
+      const encrypted = vigenere(text, key, 'encrypt');
+      document.getElementById('output').innerText = "🔒 Encrypted Text:\n" + encrypted;
+    }
+
+    function decrypt() {
+      const text = document.getElementById('textInput').value;
+      const key = document.getElementById('keyInput').value;
+      if (!text || !key) return alert("Please enter both text and key!");
+
+      const decrypted = vigenere(text, key, 'decrypt');
+      document.getElementById('output').innerText = "🔓 Decrypted Text:\n" + decrypted;
+    }
+
+    function readFile(callback) {
+      const file = document.getElementById('fileInput').files[0];
+      if (!file) return alert("Please select a file!");
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        callback(e.target.result);
+      };
+      reader.readAsText(file);
+    }
+
+    function encryptFile() {
+      const key = document.getElementById('keyInput').value;
+      if (!key) return alert("Please enter the key!");
+
+      readFile((text) => {
+        const encrypted = vigenere(text, key, 'encrypt');
+        document.getElementById('output').innerText = "🔒 Encrypted File Content:\n" + encrypted;
+        downloadText(encrypted, "encrypted.txt");
+      });
+    }
+
+    function decryptFile() {
+      const key = document.getElementById('keyInput').value;
+      if (!key) return alert("Please enter the key!");
+
+      readFile((text) => {
+        const decrypted = vigenere(text, key, 'decrypt');
+        document.getElementById('output').innerText = "🔓 Decrypted File Content:\n" + decrypted;
+        downloadText(decrypted, "decrypted.txt");
+      });
+    }
+
+    function downloadText(content, filename) {
+      const blob = new Blob([content], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+    }
+  </script>
+
+</body>
+</html>
