@@ -8,7 +8,7 @@
 <body>
 
   <div class="container">
-    <h1>🔐 Vigenère Cipher Tool</h1>
+    <h1>Vigenère Cipher Tool</h1>
 
     <textarea id="textInput" rows="5" placeholder="Enter plain or cipher text..."></textarea>
     <input type="text" id="keyInput" placeholder="Enter key">
@@ -20,7 +20,7 @@
 
     <hr>
 
-    <h3>📄 Upload a Text File</h3>
+    <h3>Upload a Text File</h3>
     <input type="file" id="fileInput" accept=".txt">
     <div class="button-group">
       <button onclick="encryptFile()">Encrypt File</button>
@@ -61,7 +61,7 @@
       if (!text || !key) return alert("Please enter both text and key!");
 
       const encrypted = vigenere(text, key, 'encrypt');
-      document.getElementById('output').innerText = "🔒 Encrypted Text:\n" + encrypted;
+      document.getElementById('output').innerText = "Encrypted Text:\n" + encrypted;
     }
 
     function decrypt() {
@@ -70,7 +70,7 @@
       if (!text || !key) return alert("Please enter both text and key!");
 
       const decrypted = vigenere(text, key, 'decrypt');
-      document.getElementById('output').innerText = "🔓 Decrypted Text:\n" + decrypted;
+      document.getElementById('output').innerText = "Decrypted Text:\n" + decrypted;
     }
 
     function readFile(callback) {
@@ -90,7 +90,7 @@
 
       readFile((text) => {
         const encrypted = vigenere(text, key, 'encrypt');
-        document.getElementById('output').innerText = "🔒 Encrypted File Content:\n" + encrypted;
+        document.getElementById('output').innerText = "Encrypted File Content:\n" + encrypted;
         downloadText(encrypted, "encrypted.txt");
       });
     }
@@ -101,7 +101,7 @@
 
       readFile((text) => {
         const decrypted = vigenere(text, key, 'decrypt');
-        document.getElementById('output').innerText = "🔓 Decrypted File Content:\n" + decrypted;
+        document.getElementById('output').innerText = "Decrypted File Content:\n" + decrypted;
         downloadText(decrypted, "decrypted.txt");
       });
     }
@@ -117,3 +117,4 @@
 
 </body>
 </html>
+
